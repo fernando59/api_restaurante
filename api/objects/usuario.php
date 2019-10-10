@@ -38,10 +38,7 @@
             password=:password,
             email=:email,
             tipo_usuario=:tipo_usuario,
-            estado=:estado
-            
-          
-            
+            estado=:estado  
         ';
         $estamento = $this->conn->prepare($query);
 
@@ -73,6 +70,31 @@
         return false;
         }
         
+        public function validar()
+        {
+            $query = 'SELECT u.id,u.usuario,u.password '.$this->tabla.' u WHERE u.email=? LIMIT 0,1';
+            $estamento =$this->conn->prepare($query);
+            $this->email  = htmlspecialchars(strip_tags($this->email));
+            $estamento->bindParam(1,$this->email);
+            $estamento->execute();
+
+            //cuento el numero de filas
+            $num= $estamento->rowCount();
+
+            if($num>0)
+            {
+                $row = $estamento->fetch(PDO::FETCH_ASSOC);
+
+                $this->id = $row['id'];
+                $this->usuario = $row['usuario'];
+                $this->password = $row['password'];
+                return true;
+            }
+            return false;
+          
+
+        }
+
         public function editar()
         {
             $query = 'UPDATE '.$this->tabla.' SET 

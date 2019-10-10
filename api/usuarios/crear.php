@@ -14,10 +14,10 @@
     $usuarios = new Usuarios($db);
 
     $data = json_decode(file_get_contents("php://input"));
-
+   echo $data->id;
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->id_persona) && 
+    if( !empty($data->id) && 
         !empty($data->usuario) && 
         !empty($data->password) &&
         !empty($data->email) &&
@@ -31,7 +31,7 @@
         $usuarios->usuario = $data->usuario;
         $usuarios->password = $data->password;
         $usuarios->email = $data->email;
-        $usuarios->id_persona = $data->id_persona;
+        $usuarios->id_persona = $data->id;
         $usuarios->estado = $data->estado;
         $usuarios->tipo_usuario = $data->tipo_usuario;
         if($usuarios->crear())
