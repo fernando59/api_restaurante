@@ -1,0 +1,1 @@
+CREATE TABLE `apirestaurante`.`mesa` ( `id` INT NOT NULL AUTO_INCREMENT , `nombre` VARCHAR(15) NOT NULL , `estado` BOOLEAN NOT NULL , `capacidad` INT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
