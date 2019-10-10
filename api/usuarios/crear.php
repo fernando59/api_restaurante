@@ -7,27 +7,37 @@
      
  
     include_once '../config/basedatos.php';
-    include_once '../objects/tipo_persona.php';
+    include_once '../objects/usuario.php';
 
     $database = new Database();
     $db = $database->connect();
-    $tipo_persona = new Tipo_Persona($db);
+    $usuarios = new Usuarios($db);
 
     $data = json_decode(file_get_contents("php://input"));
 
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->descripcion)
+    if( !empty($data->id_persona) && 
+        !empty($data->usuario) && 
+        !empty($data->password) &&
+        !empty($data->email) &&
+        !empty($data->tipo_usuario) &&
+        !empty($data->estado) 
+      
       
     )
     {
         //doy los valores al objeto mesero
-        $tipo_persona->descripcion = $data->descripcion;
-     
-        if($tipo_persona->crear())
+        $usuarios->usuario = $data->usuario;
+        $usuarios->password = $data->password;
+        $usuarios->email = $data->email;
+        $usuarios->id_persona = $data->id_persona;
+        $usuarios->estado = $data->estado;
+        $usuarios->tipo_usuario = $data->tipo_usuario;
+        if($usuarios->crear())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Tipo de persona fue creada exitosamente'));
+            echo json_encode(array('messsage'=>'Usuario fue creado exitosamente'));
         }else
         {
             //servicio invalido

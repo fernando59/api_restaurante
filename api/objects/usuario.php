@@ -1,14 +1,17 @@
 <?php
 
-    class Tipo_Persona
+    class Usuarios
     {
         private $conn;
-        private $tabla = 'tipo_persona';
+        private $tabla = 'usuarios';
 
         //atributos
-        public $id;
-        public $descripcion;
-       
+        public $id_persona;
+        public $usuario;
+        public $password;
+        public $email;
+        public $tipo_usuario;
+        public $estado;
         
 
         public function __construct($db)
@@ -18,7 +21,8 @@
 
         public function mostrar()
         {
-            $query = 'SELECT * FROM '.$this->tabla;
+            $query = 'SELECT u.id_persona,u.usuario,u.password,u.email,t.descripcion as tipo_usuario
+                FROM '.$this->tabla.' u,tipo_usuario t WHERE u.tipo_usuario=t.id';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -29,18 +33,36 @@
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET 
-            descripcion=:descripcion 
+            id_persona=:id_persona,
+            usuario=:usuario,
+            password=:password,
+            email=:email,
+            tipo_usuario=:tipo_usuario,
+            estado=:estado
+            
+          
             
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->descripcion = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
+        $this->id_persona  = htmlspecialchars(strip_tags($this->id_persona));
+        $this->usuario  = htmlspecialchars(strip_tags(strtoupper($this->usuario)));
+        $this->password  = htmlspecialchars(strip_tags($this->password));
+        $this->email  = htmlspecialchars(strip_tags($this->email));
+        $this->tipo_usuario  = htmlspecialchars(strip_tags($this->tipo_usuario));
+        $this->estado  = htmlspecialchars(strip_tags($this->estado));
         
-
+       
         //enlazo los values
-        $estamento->bindParam(':descripcion',$this->descripcion);
-        
+        $estamento->bindParam(':id_persona',$this->id_persona);
+        $estamento->bindParam(':usuario',$this->usuario);
+        $estamento->bindParam(':estado',$this->estado);
+        $estamento->bindParam(':email',$this->email);
+        $estamento->bindParam(':tipo_usuario',$this->tipo_usuario);
+        //Encripto la contraseña
+        $password_hash = password_hash($this->password,PASSWORD_BCRYPT);
+        $estamento->bindParam(':password',$password_hash);
 
         if($estamento->execute())
         {
@@ -54,17 +76,23 @@
         public function editar()
         {
             $query = 'UPDATE '.$this->tabla.' SET 
-            descripcion=:descripcion,
+            nombre=:nombre,
+            estado=:estado,
+            capacidad=:capacidad
             WHERE id=:id
             
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->descripcion = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
+        $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
+        $this->estado  = htmlspecialchars(strip_tags($this->estado));
+        $this->capacidad  = htmlspecialchars(strip_tags($this->capacidad));
         $this->id  = htmlspecialchars(strip_tags($this->id));
         //enlazo los values
-        $estamento->bindParam(':descripcion',$this->descripcion);
+        $estamento->bindParam(':nombre',$this->nombre);
+        $estamento->bindParam(':estado',$this->estado);
+        $estamento->bindParam(':capacidad',$this->capacidad);
         $estamento->bindParam(':id',$this->id);
         if($estamento->execute())
         {
