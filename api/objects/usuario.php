@@ -49,7 +49,7 @@
         $this->email  = htmlspecialchars(strip_tags($this->email));
         $this->tipo_usuario  = htmlspecialchars(strip_tags($this->tipo_usuario));
         $this->estado  = htmlspecialchars(strip_tags($this->estado));
-        
+      
        
         //enlazo los values
         $estamento->bindParam(':id_persona',$this->id_persona);
@@ -60,7 +60,7 @@
         //Encripto la contraseña
         $password_hash = password_hash($this->password,PASSWORD_BCRYPT);
         $estamento->bindParam(':password',$password_hash);
-
+      
         if($estamento->execute())
         {
           
@@ -72,16 +72,18 @@
         
         public function validar()
         {
-            $query = 'SELECT u.id,u.usuario,u.password '.$this->tabla.' u WHERE u.email=? LIMIT 0,1';
+            $query = "SELECT id_persona,usuario,password as con ".$this->tabla." WHERE email= ? LIMIT 0,1";
             $estamento =$this->conn->prepare($query);
+            echo $this->email;
+           
             $this->email  = htmlspecialchars(strip_tags($this->email));
             $estamento->bindParam(1,$this->email);
             $estamento->execute();
-
+            
             //cuento el numero de filas
             $num= $estamento->rowCount();
-
-            if($num>0)
+            echo $num;
+            if($num==0)
             {
                 $row = $estamento->fetch(PDO::FETCH_ASSOC);
 

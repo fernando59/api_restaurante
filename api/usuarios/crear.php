@@ -12,9 +12,7 @@
     $database = new Database();
     $db = $database->connect();
     $usuarios = new Usuarios($db);
-
     $data = json_decode(file_get_contents("php://input"));
-   echo $data->id;
     //preguntamos si los campos no estan vacios
 
     if( !empty($data->id) && 
