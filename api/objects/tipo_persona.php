@@ -50,11 +50,14 @@
        
         return false;
         }
+
+
+        //funcion editar
         
         public function editar()
         {
             $query = 'UPDATE '.$this->tabla.' SET 
-            descripcion=:descripcion,
+            descripcion=:descripcion
             WHERE id=:id
             
         ';
@@ -63,12 +66,13 @@
         //paso los parametros
         $this->descripcion = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
         $this->id  = htmlspecialchars(strip_tags($this->id));
+       
         //enlazo los values
         $estamento->bindParam(':descripcion',$this->descripcion);
         $estamento->bindParam(':id',$this->id);
         if($estamento->execute())
         {
-          
+        
             return true;
         }
        
