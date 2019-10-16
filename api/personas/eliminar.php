@@ -6,19 +6,19 @@
      header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
      include_once '../config/basedatos.php';
-     include_once '../objects/mesas.php';
+     include_once '../objects/persona.php';
 
      $database = new Database();
      $db = $database->connect();
-     $mesa = new Mesas($db);
+     $persona = new Personas($db);
    
      $data = json_decode(file_get_contents("php://input"));
      $id = isset($_GET['id'])?$_GET['id']:'';
-     //$mesa->id = $data->id;
-     if($mesa->eliminar($id))
+     //$persona->id = $data->id;
+     if($persona->eliminar($id))
      {
          http_response_code(200);
-         echo json_encode(array('messsage'=>'Mesa fue eliminada exitosamente'));
+         echo json_encode(array('messsage'=>'Persona fue eliminada exitosamente'));
      }else
      {
          //servicio invalido
