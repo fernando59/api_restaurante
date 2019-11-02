@@ -2,47 +2,42 @@
     header('Access-Control-Allow-Origin:*');
     header('Content-Type:application/json');
 
-    include_once '../objects/mesas.php';
+    include_once '../objects/productos.php';
     include_once '../config/basedatos.php';
 
     $database =  new  Database();
     $db = $database->connect();
 
-    $mesa = new Mesas($db);
-    $resultado  =$mesa->mostrar();
+    $productos = new Producto($db);
+    $resultado  =$productos->DropDownUnidad();
     $numero  = $resultado->rowCount();
-    
-
 
     if($numero>0)
     {
-        $array_mesa=array();
-        $array_mesa['data']=array();
+        $array_productos=array();
+        $array_productos['data']=array();
         while($fila = $resultado->fetch(PDO::FETCH_ASSOC))
         {
             extract($fila);
             //Creo una v  ariable con el array y paso los parametros
             $item  =array(
                 'codigo'=>$codigo,
-                'nombre'=>$nombre,
-                'estado'=>$estado,
-                'capacidad'=>$capacidad
-            
-
+                'nombre'=>$nombre
+       
             );
             http_response_code(200);
-            array_push($array_mesa['data'],$item);
+            array_push($array_productos['data'],$item);
 
 
            
 
          }
-         echo json_encode($array_mesa);
+         echo json_encode($array_productos);
 
     }else
     {
         http_response_code(404);
-        echo json_encode(array("message" =>"No  found"));
+        echo json_encode(array("message" =>"error"));
     }
 
 

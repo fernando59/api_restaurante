@@ -1,19 +1,18 @@
 <?php
 
-    class Personas
+    class Producto
     {
         private $conn;
-        private $tabla = 'Persona';
+        private $tabla = 'Productos';
 
         //atributos
-        public $id;
+        public $codigo;
         public $nombre;
-        public $apellido;
-        public $edad;
-        public $telefono;
-        public $direccion;
-        public $carnet;
-     
+        public $descripcion;
+        public $precio;
+        public $sw_stock;
+        public $tipo_producto;
+        public $id_unidad_medida;
         
 
         public function __construct($db)
@@ -23,10 +22,9 @@
 
         public function mostrar()
         {
-            $query = 'SELECT 
-                p.id,p.nombre,p.apellido,p.edad,p.telefono,
-                p.direccion,p.ci,t.descripcion as descripcion
-              FROM '.$this->tabla.' p,tipo_persona t WHERE p.tipo_per=t.id ';
+            $query = 'SELECT
+                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,p.tipo_producto,u.nombre as unidad
+              FROM '.$this->tabla.' p,Unidad_Medida u WHERE p.id_unidad_medida=u.codigo ';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -34,38 +32,53 @@
             //retorno la consulta
             return  $estamento;
         }
-        
+        public function mostrarBebidas()
+        {
+            $query = 'SELECT
+                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,p.tipo_producto,u.nombre as unidad
+              FROM '.$this->tabla.' p,Unidad_Medida u WHERE p.id_unidad_medida=u.codigo AND p.tipo_producto="B" ';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+
+        public function DropDownUnidad()
+        {
+            $query='SELECT codigo,nombre  FROM Unidad_Medida WHERE tipo="B"';
+             //preparo la consulta
+             $estamento = $this->conn->prepare($query);
+             //ejecuto la consulta
+             $estamento->execute();
+             //retorno la consulta
+             return  $estamento;
+        }
+
+
+
+
+
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET  
-            nombre=:nombre,
-            apellido=:apellido,
-            edad=:edad,
-            telefono=:telefono,
-            direccion=:direccion,
-            carnet=:carnet
-           
+            descripcion=:descripcion,
+            id_mesa=:id_mesa,
+            id_mesero=:id_mesero
             
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
-        $this->apellido  = htmlspecialchars(strip_tags($this->apellido));
-        $this->edad  = htmlspecialchars(strip_tags($this->edad));
-        $this->telefono  = htmlspecialchars(strip_tags(strtoupper($this->telefono)));
-        $this->direccion  = htmlspecialchars(strip_tags($this->direccion));
-        $this->carnet  = htmlspecialchars(strip_tags($this->carnet));
-      
+        $this->descripcion  = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
+        $this->id_mesa  = htmlspecialchars(strip_tags($this->id_mesa));
+        $this->id_mesero  = htmlspecialchars(strip_tags($this->id_mesero));
 
         //enlazo los values
-        $estamento->bindParam(':nombre',$this->nombre);
-        $estamento->bindParam(':apellido',$this->apellido);
-        $estamento->bindParam(':edad',$this->edad);
-        $estamento->bindParam(':telefono',$this->telefono);
-        $estamento->bindParam(':direccion',$this->direccion);
-        $estamento->bindParam(':carnet',$this->carnet);
-       
+        $estamento->bindParam(':descripcion',$this->descripcion);
+        $estamento->bindParam(':id_mesa',$this->id_mesa);
+        $estamento->bindParam(':id_mesero',$this->id_mesero);
 
         if($estamento->execute())
         {
@@ -106,17 +119,16 @@
        
         return false;
         }
-        */
-        public function eliminar($idd)
+        public function eliminar()
         {
             $query = 'DELETE FROM '.$this->tabla.' WHERE id= ?';
             $estamento = $this->conn->prepare($query);
 
-           // $this->idd=htmlspecialchars(strip_tags($this->idd));
+            $this->id=htmlspecialchars(strip_tags($this->id));
  
            
-            $estamento->bindParam(1, $idd);
-           
+            $estamento->bindParam(1, $this->id);
+        
             // execute query
             if($estamento->execute()){
                 return true;
@@ -140,7 +152,7 @@
         }
 
 
-
+*/
     }
 
 

@@ -15,23 +15,23 @@
     $data = json_decode(file_get_contents("php://input"));
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->id) && 
-        !empty($data->usuario) && 
-        !empty($data->password) &&
+    if( !empty($data->codigo) && 
+        !empty($data->nombre_usuario) && 
+        !empty($data->password_usuario) &&
         !empty($data->email) &&
-        !empty($data->tipo_usuario) &&
+        !empty($data->codigo_usuario) &&
         !empty($data->estado) 
       
       
     )
     {
         //doy los valores al objeto mesero
-        $usuarios->usuario = $data->usuario;
-        $usuarios->password = $data->password;
+        $usuarios->nombre_usuario = $data->nombre_usuario;
+        $usuarios->password_usuario = $data->password_usuario;
         $usuarios->email = $data->email;
-        $usuarios->id_persona = $data->id;
+        $usuarios->codigo = $data->codigo;
         $usuarios->estado = $data->estado;
-        $usuarios->tipo_usuario = $data->tipo_usuario;
+        $usuarios->codigo_usuario = $data->codigo_usuario;
         if($usuarios->crear())
         {
             http_response_code(201);
@@ -45,7 +45,7 @@
     }
      else
     {
-        http_response_code(404);
+        http_response_code(201);
         echo json_encode(array('messsage'=>'Error'));
     }
 

@@ -2,22 +2,20 @@
     header('Access-Control-Allow-Origin:*');
     header('Content-Type:application/json');
 
-    include_once '../objects/usuario.php';
+    include_once '../objects/productos.php';
     include_once '../config/basedatos.php';
 
     $database =  new  Database();
     $db = $database->connect();
 
-    $usuario = new Usuarios($db);
-    $resultado  =$usuario->mostrar();
+    $productos = new Producto($db);
+    $resultado  =$productos->mostrarBebidas();
     $numero  = $resultado->rowCount();
-    
-
 
     if($numero>0)
     {
-        $array_usuario=array();
-        $array_usuario['data']=array();
+        $array_productos=array();
+        $array_productos['data']=array();
         while($fila = $resultado->fetch(PDO::FETCH_ASSOC))
         {
             extract($fila);
@@ -25,29 +23,24 @@
             $item  =array(
                 'codigo'=>$codigo,
                 'nombre'=>$nombre,
-                'apellido'=>$apellido,
-                'telefono'=>$telefono,
-                'edad'=>$edad,
-                'carnet'=>$carnet,
-                'direccion'=>$direccion,
-                'usuario'=>$nombre_usuario,
-                'email'=>$email
-            
-
+                'descripcion'=>$descripcion,
+                'precio'=>$precio,
+                'tipo_producto'=>$tipo_producto,
+                'unidad_de_medida'=>$unidad
             );
             http_response_code(200);
-            array_push($array_usuario['data'],$item);
+            array_push($array_productos['data'],$item);
 
 
            
 
          }
-         echo json_encode($array_usuario);
+         echo json_encode($array_productos);
 
     }else
     {
         http_response_code(404);
-        echo json_encode(array("message" =>"No  found"));
+        echo json_encode(array("message" =>"error"));
     }
 
 

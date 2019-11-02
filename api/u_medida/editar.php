@@ -1,36 +1,34 @@
 <?php 
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-    header("Access-Control-Allow-Methods: POST");
+    header("Access-Control-Allow-Methods: PUT");
     header("Access-Control-Max-Age: 3600");
     header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
      
  
     include_once '../config/basedatos.php';
-    include_once '../objects/mesas.php';
+    include_once '../objects/u_medida.php';
 
     $database = new Database();
     $db = $database->connect();
-    $mesa = new Mesas($db);
+    $u_medida = new U_Medida($db);
 
     $data = json_decode(file_get_contents("php://input"));
 
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->nombre) && 
-        !empty($data->estado) && 
-        !empty($data->capacidad) 
-      
+    if( !empty($data->codigo) && 
+        !empty($data->nombre)
+     
     )
     {
         //doy los valores al objeto mesero
-        $mesa->nombre = $data->nombre;
-        $mesa->estado = $data->estado;
-        $mesa->capacidad = $data->capacidad;
-        if($mesa->crear())
+        $u_medida->codigo = $data->codigo;
+        $u_medida->nombre = $data->nombre;
+        if($u_medida->editar())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Mesa fue creada exitosamente'));
+            echo json_encode(array('messsage'=>'Fue modificado exitosamente'));
         }else
         {
             //servicio invalido
@@ -40,7 +38,7 @@
     }
      else
     {
-        http_response_code(201);
+        http_response_code(404);
         echo json_encode(array('messsage'=>'Error'));
     }
 

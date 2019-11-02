@@ -14,37 +14,22 @@
     $mesa = new Mesas($db);
 
     $data = json_decode(file_get_contents("php://input"));
-
-    //preguntamos si los campos no estan vacios
-
-    if( !empty($data->nombre) && 
-        !empty($data->estado) && 
-        !empty($data->capacidad) &&
-        !empty($data->id)
-      
-    )
-    {
-        //doy los valores al objeto mesero
         $mesa->nombre = $data->nombre;
         $mesa->estado = $data->estado;
         $mesa->capacidad = $data->capacidad;
-        $mesa->id = $data->id;
+        $mesa->codigo = $data->codigo;
         if($mesa->editar())
         {
-            http_response_code(201);
+            http_response_code(200);
             echo json_encode(array('messsage'=>'Mesa fue editada exitosamente'));
         }else
         {
             //servicio invalido
             http_response_code(503);
-            echo json_encode(array('messsage'=>'Error'));
+            echo json_encode(array('messsage'=>'Error servicio no encontrado'));
         }
-    }
-     else
-    {
-        http_response_code(404);
-        echo json_encode(array('messsage'=>'Error'));
-    }
+    
+  
 
 
 ?>

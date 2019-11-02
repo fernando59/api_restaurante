@@ -7,30 +7,26 @@
      
  
     include_once '../config/basedatos.php';
-    include_once '../objects/mesas.php';
+    include_once '../objects/u_medida.php';
 
     $database = new Database();
     $db = $database->connect();
-    $mesa = new Mesas($db);
+    $u_medida = new U_medida($db);
 
     $data = json_decode(file_get_contents("php://input"));
 
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->nombre) && 
-        !empty($data->estado) && 
-        !empty($data->capacidad) 
-      
+    if( !empty($data->nombre)
+    
     )
     {
         //doy los valores al objeto mesero
-        $mesa->nombre = $data->nombre;
-        $mesa->estado = $data->estado;
-        $mesa->capacidad = $data->capacidad;
-        if($mesa->crear())
+        $u_medida->nombre = $data->nombre;
+        if($u_medida->crear())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Mesa fue creada exitosamente'));
+            echo json_encode(array('messsage'=>'Unidad de medida fue creada exitosamente'));
         }else
         {
             //servicio invalido
@@ -40,7 +36,7 @@
     }
      else
     {
-        http_response_code(201);
+        http_response_code(404);
         echo json_encode(array('messsage'=>'Error'));
     }
 

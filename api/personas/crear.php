@@ -21,9 +21,9 @@
         !empty($data->apellido) && 
         !empty($data->edad) && 
         !empty($data->direccion) && 
-        !empty($data->ci) && 
-        !empty($data->telefono) &&
-        !empty($data->tipo_persona)
+        !empty($data->carnet)  &&
+        !empty($data->telefono)
+      
     )
     {
         //doy los valores al objeto mesero
@@ -32,12 +32,12 @@
         $persona->edad = $data->edad;
         $persona->direccion = $data->direccion;
         $persona->telefono = $data->telefono;
-        $persona->ci = $data->ci;
-        $persona->tipo_persona=$data->tipo_persona;
+        $persona->carnet = $data->carnet;
+     
         if($persona->crear())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Mesero fue creado exitosamente'));
+            echo json_encode(array('messsage'=>'Persona fue creado exitosamente'));
         }else
         {
             //servicio invalido
@@ -48,7 +48,7 @@
      else
     {
         http_response_code(201);
-        echo json_encode(array('messsage'=>'Error'));
+        echo json_encode(array('messsage'=>'Faltan datos'));
     }
 
 

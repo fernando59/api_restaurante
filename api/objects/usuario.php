@@ -3,14 +3,14 @@
     class Usuarios
     {
         private $conn;
-        private $tabla = 'usuarios';
+        private $tabla = 'Usuario';
 
         //atributos
-        public $id_persona;
-        public $usuario;
-        public $password;
+        public $codigo;
+        public $nombre_usuario;
+        public $password_usuario;
         public $email;
-        public $tipo_usuario;
+        public $codigo_usuario;
         public $estado;
         
 
@@ -21,8 +21,19 @@
 
         public function mostrar()
         {
-            $query = 'SELECT u.id_persona,u.usuario,u.password,u.email,t.descripcion as tipo_usuario
-                FROM '.$this->tabla.' u,tipo_usuario t WHERE u.tipo_usuario=t.id';
+            $query = 'SELECT
+            Persona.codigo,
+            Persona.nombre,
+            Persona.apellido,
+            Persona.telefono,
+            Persona.edad,
+            Persona.carnet,
+            Persona.direccion,
+            Usuario.nombre_usuario,
+            Usuario.email
+        FROM
+            Persona 
+        LEFT JOIN '.$this->tabla.' ON Usuario.codigo = Persona.codigo';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -32,34 +43,33 @@
         }
         public function crear()
         {
-            $query = 'INSERT INTO '.$this->tabla.' SET 
-            id_persona=:id_persona,
-            usuario=:usuario,
-            password=:password,
+            $query = 'INSERT INTO '.$this->tabla.' SET  
+            codigo=:codigo,
+            nombre_usuario=:nombre_usuario,
+            password_usuario=:password_usuario,
             email=:email,
-            tipo_usuario=:tipo_usuario,
-            estado=:estado  
+            codigo_usuario=:codigo_usuario,
+            estado=:estado
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->id_persona  = htmlspecialchars(strip_tags($this->id_persona));
-        $this->usuario  = htmlspecialchars(strip_tags(strtoupper($this->usuario)));
-        $this->password  = htmlspecialchars(strip_tags($this->password));
+        $this->codigo  = htmlspecialchars(strip_tags($this->codigo));
+        $this->nombre_usuario  = htmlspecialchars(strip_tags(strtoupper($this->nombre_usuario)));
+        $this->password_usuario  = htmlspecialchars(strip_tags($this->password_usuario));
         $this->email  = htmlspecialchars(strip_tags($this->email));
-        $this->tipo_usuario  = htmlspecialchars(strip_tags($this->tipo_usuario));
+        $this->codigo_usuario  = htmlspecialchars(strip_tags($this->codigo_usuario));
         $this->estado  = htmlspecialchars(strip_tags($this->estado));
-      
        
         //enlazo los values
-        $estamento->bindParam(':id_persona',$this->id_persona);
-        $estamento->bindParam(':usuario',$this->usuario);
+        $estamento->bindParam(':codigo',$this->codigo);
+        $estamento->bindParam(':nombre_usuario',$this->nombre_usuario);
         $estamento->bindParam(':estado',$this->estado);
         $estamento->bindParam(':email',$this->email);
-        $estamento->bindParam(':tipo_usuario',$this->tipo_usuario);
+        $estamento->bindParam(':codigo_usuario',$this->codigo_usuario);
         //Encripto la contraseña
-        $password_hash = password_hash($this->password,PASSWORD_BCRYPT);
-        $estamento->bindParam(':password',$password_hash);
+        //$password_hash = password_hash($this->password,PASSWORD_BCRYPT);
+        $estamento->bindParam(':password_usuario',$this->password_usuario);
       
         if($estamento->execute())
         {
@@ -69,7 +79,7 @@
        
         return false;
         }
-        
+    
         public function validar()
         {
             $query = "SELECT id_persona,usuario,password as con ".$this->tabla." WHERE email= ? LIMIT 0,1";
@@ -145,7 +155,19 @@
         }
         public function buscar($palabra)
         {
-            $query = 'SELECT * FROM '.$this->tabla.' WHERE nombre LIKE ? OR capacidad LIKE ? AND estado=1  LIMIT 0,10';
+            $query = 'SELECT
+            Persona.codigo,
+            Persona.nombre,
+            Persona.apellido,
+            Persona.telefono,
+            Persona.edad,
+            Persona.carnet,
+            Persona.direccion,
+            Usuario.nombre_usuario,
+            Usuario.email
+        FROM
+            Persona 
+        LEFT JOIN '.$this->tabla.' ON Usuario.codigo = Persona.codigo WHERE Usuario.email LIKE ? OR Usuario.nombre_usuario LIKE ? AND estado="A" LIMIT 0,10';
             $estamento = $this->conn->prepare($query);
 
             $palabra=htmlspecialchars(strip_tags($palabra));

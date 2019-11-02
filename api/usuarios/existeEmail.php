@@ -9,7 +9,7 @@
     $db = $database->connect();
 
     $usuario = new Usuarios($db);
-    $resultado  =$usuario->mostrar();
+    $resultado  =$usuario->validar();
     $numero  = $resultado->rowCount();
     
 
@@ -23,17 +23,7 @@
             extract($fila);
             //Creo una v  ariable con el array y paso los parametros
             $item  =array(
-                'codigo'=>$codigo,
-                'nombre'=>$nombre,
-                'apellido'=>$apellido,
-                'telefono'=>$telefono,
-                'edad'=>$edad,
-                'carnet'=>$carnet,
-                'direccion'=>$direccion,
-                'usuario'=>$nombre_usuario,
                 'email'=>$email
-            
-
             );
             http_response_code(200);
             array_push($array_usuario['data'],$item);

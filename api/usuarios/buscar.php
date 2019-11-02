@@ -9,11 +9,10 @@
     $db = $database->connect();
 
     $usuario = new Usuarios($db);
-    $resultado  =$usuario->mostrar();
+    //obtengo la palabra
+    $palabra = isset($_GET['s'])?$_GET['s']:'';
+    $resultado  =$usuario->buscar($palabra);
     $numero  = $resultado->rowCount();
-    
-
-
     if($numero>0)
     {
         $array_usuario=array();
@@ -49,6 +48,7 @@
         http_response_code(404);
         echo json_encode(array("message" =>"No  found"));
     }
+
 
 
 ?>

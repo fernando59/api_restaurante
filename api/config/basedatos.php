@@ -2,10 +2,10 @@
 
 class Database{
 
-    private $host ='localhost';
-    private $dbName = 'apirestaurante';
-    private $username = 'root';
-    private $password ='';
+    private $host ='remotemysql.com';//localhost
+    private $dbName = 'dOMCrtTsXM';//apirestaurante
+    private $username = 'dOMCrtTsXM';//root
+    private $password ='MpuEQ6dWIq';
     private $conn;
 
 
