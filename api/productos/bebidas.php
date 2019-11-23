@@ -25,8 +25,10 @@
                 'nombre'=>$nombre,
                 'descripcion'=>$descripcion,
                 'precio'=>$precio,
+                'sw_stock'=>$sw_stock,
                 'tipo_producto'=>$tipo_producto,
-                'unidad_de_medida'=>$unidad
+                'unidad_de_medida'=>$unidad,
+                'id_unidad_medida'=>$id_unidad_medida
             );
             http_response_code(200);
             array_push($array_productos['data'],$item);

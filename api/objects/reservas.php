@@ -1,6 +1,6 @@
 <?php
 
-    class Pedidos
+    class Reserva
     {
         private $conn;
         private $tabla = 'Reserva';
@@ -8,10 +8,12 @@
         //atributos
         public $codigo;
         public $fecha;
-        public $id_mesa;
-        public $id_mesero;
-        
-
+        public $tipo_reserva;
+        public $id_cliente;
+        public $hora;
+        public $observaciones;
+        public $numero_personas;
+        public $estado;
         public function __construct($db)
         {
             $this->conn = $db;
@@ -19,7 +21,8 @@
 
         public function mostrar()
         {
-            $query = 'SELECT p.id,p.descripcion,m.nombre as id_mesa,me.nombre as id_mesero FROM '.$this->tabla.' p,mesa m,mesero me WHERE id_mesa=m.id AND id_mesero=me.id ';
+            $query = 'SELECT r.codigo,r.fecha,r.tipo_reserva,r.id_cliente,cl.nombre as nombre 
+            FROM '.$this->tabla.' r,Cliente c,Persona cl WHERE r.id_cliente=c.codigo AND cl.codigo=c.codigo ';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -31,23 +34,33 @@
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET  
-            descripcion=:descripcion,
-            id_mesa=:id_mesa,
-            id_mesero=:id_mesero
+            fecha=:fecha,
+            tipo_reserva=:tipo_reserva,
+            id_cliente=:id_cliente,
+            estado=:estado,
+            observaciones=:observaciones,
+            hora=:hora,
+            numero_personas=:numero_personas
             
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->descripcion  = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
-        $this->id_mesa  = htmlspecialchars(strip_tags($this->id_mesa));
-        $this->id_mesero  = htmlspecialchars(strip_tags($this->id_mesero));
-
+        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
+        $this->tipo_reserva  = htmlspecialchars(strip_tags($this->tipo_reserva));
+        $this->id_cliente  = htmlspecialchars(strip_tags($this->id_cliente));
+        $this->numero_personas = htmlspecialchars(strip_tags($this->numero_personas));
+        $this->hora  = htmlspecialchars(strip_tags($this->hora));
+        $this->observaciones  = htmlspecialchars(strip_tags($this->observaciones));
+        $this->estado = htmlspecialchars(strip_tags($this->estado));
         //enlazo los values
-        $estamento->bindParam(':descripcion',$this->descripcion);
-        $estamento->bindParam(':id_mesa',$this->id_mesa);
-        $estamento->bindParam(':id_mesero',$this->id_mesero);
-
+        $estamento->bindParam(':fecha',$this->fecha);
+        $estamento->bindParam(':tipo_reserva',$this->tipo_reserva);
+        $estamento->bindParam(':id_cliente',$this->id_cliente);
+        $estamento->bindParam(':estado',$this->estado);
+        $estamento->bindParam(':numero_personas',$this->numero_personas);
+        $estamento->bindParam(':hora',$this->hora);
+        $estamento->bindParam(':observaciones',$this->observaciones);
         if($estamento->execute())
         {
        

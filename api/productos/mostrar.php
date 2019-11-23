@@ -9,7 +9,7 @@
     $db = $database->connect();
 
     $productos = new Producto($db);
-    $resultado  =$productos->mostrar();
+    $resultado  =$productos->mostrarBebidas();
     $numero  = $resultado->rowCount();
 
     if($numero>0)
@@ -25,8 +25,10 @@
                 'nombre'=>$nombre,
                 'descripcion'=>$descripcion,
                 'precio'=>$precio,
+                'sw_stock'=>$sw_stock,
                 'tipo producto'=>$tipo_producto,
-                'unidad de medida'=>$unidad
+                'unidad de medida'=>$unidad,
+                'id_unidad_medida'=>$id_unidad_medida
             );
             http_response_code(200);
             array_push($array_productos['data'],$item);

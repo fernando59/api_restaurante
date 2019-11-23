@@ -2,22 +2,20 @@
     header('Access-Control-Allow-Origin:*');
     header('Content-Type:application/json');
 
-    include_once '../objects/u_medida.php';
+    include_once '../objects/productos.php';
     include_once '../config/basedatos.php';
 
     $database =  new  Database();
     $db = $database->connect();
 
-    $u_medida= new U_Medida($db);
-    $resultado  =$u_medida->mostrar();
+    $productos = new Producto($db);
+    $resultado  =$productos->DropDownUnidad2();
     $numero  = $resultado->rowCount();
-    
-  
 
     if($numero>0)
     {
-        $array_u_medida=array();
-        $array_u_medida['data']=array();
+        $array_productos=array();
+        $array_productos['data']=array();
         while($fila = $resultado->fetch(PDO::FETCH_ASSOC))
         {
             extract($fila);
@@ -26,21 +24,21 @@
                 'codigo'=>$codigo,
                 'nombre'=>$nombre,
                 'tipo'=>$tipo
-
+       
             );
             http_response_code(200);
-            array_push($array_u_medida['data'],$item);
+            array_push($array_productos['data'],$item);
 
 
            
 
          }
-         echo json_encode($array_u_medida);
+         echo json_encode($array_productos);
 
     }else
     {
         http_response_code(404);
-        echo json_encode(array("message" =>"No persons found"));
+        echo json_encode(array("message" =>"error"));
     }
 
 

@@ -75,6 +75,30 @@
       
         return false;
         }
+        public function mostrarMeseros()
+        {
+            $query = 'SELECT 
+             p.codigo,p.nombre as nombre
+              FROM '.$this->tabla.' p,Mesero m WHERE p.codigo=m.codigo';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarClientes()
+        {
+            $query = 'SELECT 
+             p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.nit
+              FROM '.$this->tabla.' p,Cliente m WHERE p.codigo=m.codigo';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
         /*
         
         public function editar()

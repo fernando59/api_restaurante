@@ -7,6 +7,7 @@
         //atributos
         public $codigo;
         public $nombre;
+        public $tipo;
       
 
         //constructor
@@ -31,14 +32,16 @@
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET 
-                nombre=:nombre
+                nombre=:nombre,
+                tipo=:tipo
             ';
             $estamento = $this->conn->prepare($query);
             //paso los parametros
             $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
+            $this->tipo=htmlspecialchars(strip_tags($this->tipo));
             //enlazo los values
             $estamento->bindParam(':nombre',$this->nombre);
-         
+            $estamento->bindParam(':tipo',$this->tipo);
             if($estamento->execute())
             {
                 return true;
@@ -49,16 +52,18 @@
         public function editar()
         {
             $query = 'UPDATE '.$this->tabla.' SET 
-            nombre=:nombre
+            nombre=:nombre,
+            tipo=:tipo
              WHERE codigo=:codigo
             ';
             $estamento = $this->conn->prepare($query);
             //paso los parametros
             $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
-
+        
             //enlazo los values
             $estamento->bindParam(':nombre',$this->nombre);
             $estamento->bindParam(':codigo',$this->codigo);
+            $estamento->bindParam(':tipo',$this->tipo);
             if($estamento->execute())
             {
                 return true;

@@ -7,31 +7,37 @@
      
  
     include_once '../config/basedatos.php';
-    include_once '../objects/u_medida.php';
+    include_once '../objects/productos.php';
 
     $database = new Database();
     $db = $database->connect();
-    $u_medida = new U_Medida($db);
-
+    $producto = new Producto($db);
     $data = json_decode(file_get_contents("php://input"));
-
     //preguntamos si los campos no estan vacios
 
-   
+
+    
         //doy los valores al objeto mesero
-        $u_medida->codigo = $data->codigo;
-        $u_medida->nombre = $data->nombre;
-        $u_medida->tipo = $data->tipo;
-        if($u_medida->editar())
+        $producto->codigo=$data->codigo;
+        $producto->nombre = $data->nombre;
+        $producto->descripcion = $data->descripcion;
+        $producto->sw_stock = $data->sw_stock;
+        $producto->precio = $data->precio;
+        $producto->tipo_producto = $data->tipo_producto;
+        $producto->id_unidad_medida = $data->id_unidad_medida;
+
+        if($producto->editar())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Fue modificado exitosamente'));
+            echo json_encode(array('messsage'=>'Producto fue editado exitosamente'));
         }else
         {
             //servicio invalido
             http_response_code(503);
             echo json_encode(array('messsage'=>'Error'));
         }
- 
+    
+    
+
 
 ?>

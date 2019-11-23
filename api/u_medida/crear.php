@@ -17,12 +17,11 @@
 
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->nombre)
+ 
     
-    )
-    {
         //doy los valores al objeto mesero
         $u_medida->nombre = $data->nombre;
+        $u_medida->tipo = $data->tipo;
         if($u_medida->crear())
         {
             http_response_code(201);
@@ -33,12 +32,8 @@
             http_response_code(503);
             echo json_encode(array('messsage'=>'Error'));
         }
-    }
-     else
-    {
-        http_response_code(404);
-        echo json_encode(array('messsage'=>'Error'));
-    }
+    
+ 
 
 
 ?>
