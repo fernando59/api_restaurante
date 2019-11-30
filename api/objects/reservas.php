@@ -4,7 +4,7 @@
     {
         private $conn;
         private $tabla = 'Reserva';
-
+        private $table='Detalle_Reseva';
         //atributos
         public $codigo;
         public $fecha;
@@ -14,6 +14,8 @@
         public $observaciones;
         public $numero_personas;
         public $estado;
+        public $id_reserva;
+        public $id_mesa;
         public function __construct($db)
         {
             $this->conn = $db;
@@ -69,6 +71,55 @@
       
         return false;
         }
+        public function obetnerUltimoId()
+        {
+            $query = 'SELECT codigo
+            FROM '.$this->tabla.'  order by codigo desc limit 1';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function crearDetalle(){
+            $query = 'INSERT INTO '.$this->table.' SET  
+            id_reserva=:id_reserva,
+            id_mesa=:id_mesa
+          
+            
+        ';
+        $estamento = $this->conn->prepare($query);
+
+        //paso los parametros
+        $this->id_reserva = htmlspecialchars(strip_tags($this->id_reserva));
+        $this->id_mesa  = htmlspecialchars(strip_tags($this->id_mesa));
+        //enlazo los values
+        $estamento->bindParam(':id_reserva',$this->id_reserva);
+        $estamento->bindParam(':id_mesa',$this->id_mesa);
+        
+        if($estamento->execute())
+        {
+       
+            return true;
+        }
+      
+        return false;
+        }
+
+        public function filtrarReserva($fecha)
+        {
+            $query = 'SELECT r.codigo,r.fecha,r.hora,r.estado,r.numero_personas,p.nombre FROM '.$this->tabla.' r,Persona p WHERE fecha =? AND r.id_cliente=p.codigo';
+         
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(1,$fecha);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        
         /*
         
         public function editar()

@@ -18,17 +18,13 @@
     //preguntamos si los campos no estan vacios
 
         //doy los valores al objeto mesero
-        $reserva->fecha = $data->fecha;
-        $reserva->tipo_reserva = $data->tipo_reserva;
-        $reserva->id_cliente = $data->id_cliente;
-        $reserva->observaciones = $data->observaciones;
-        $reserva->numero_personas = $data->numero_personas;
-        $reserva->hora = $data->hora;
-        $reserva->estado = $data->estado;
-        if($reserva->crear())
+        $reserva->id_reserva = $data->id_reserva;
+        $reserva->id_mesa = $data->id_mesa;
+    
+        if($reserva->crearDetalle())
         {
             http_response_code(201);
-            echo json_encode(array('messsage'=>'Reserva fue creada exitosamente'));
+            echo json_encode(array('messsage'=>'Detalle reserva fue creada exitosamente'));
         }else
         {
             //servicio invalido

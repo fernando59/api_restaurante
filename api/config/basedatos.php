@@ -7,7 +7,11 @@ class Database{
     private $username = 'dOMCrtTsXM';//root
     private $password ='MpuEQ6dWIq';
     private $conn;
-
+    /*  private $host ='db4free.net';//localhost
+    private $dbName = 'restaurante_api';//apirestaurante
+    private $username = 'fernando59';//root
+    private $password ='1feernando1';
+    private $conn;*/
 
     public function connect()
     {
