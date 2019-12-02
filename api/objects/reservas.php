@@ -119,30 +119,37 @@
             //retorno la consulta
             return  $estamento;
         }
+        public function obtenerUno($codigo)
+        {
+            $query = 'SELECT reserva.codigo,COUNT(detalle_reseva.id_mesa) as mesas, reserva.fecha,reserva.estado,reserva.hora,reserva.observaciones, persona.nombre,persona.apellido,persona.telefono 
+            from reserva,detalle_reseva,persona WHERE persona.codigo=reserva.id_cliente AND detalle_reseva.id_reserva=reserva.codigo AND reserva.codigo=? GROUP BY reserva.codigo';
+         
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(1,$codigo);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
         
-        /*
         
-        public function editar()
+        public function editarEstado()
         {
             $query = 'UPDATE '.$this->tabla.' SET 
-            nombre=:nombre,
-            estado=:estado,
-            capacidad=:capacidad
-            WHERE id=:id
-            
+            estado=:estado
+            WHERE codigo=:codigo
         ';
+       
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
+     
         $this->estado  = htmlspecialchars(strip_tags($this->estado));
-        $this->capacidad  = htmlspecialchars(strip_tags($this->capacidad));
-        $this->id  = htmlspecialchars(strip_tags($this->id));
+        $this->codigo  = htmlspecialchars(strip_tags($this->codigo));
         //enlazo los values
-        $estamento->bindParam(':nombre',$this->nombre);
         $estamento->bindParam(':estado',$this->estado);
-        $estamento->bindParam(':capacidad',$this->capacidad);
-        $estamento->bindParam(':id',$this->id);
+        $estamento->bindParam(':codigo',$this->codigo);
         if($estamento->execute())
         {
           
@@ -151,6 +158,7 @@
        
         return false;
         }
+         /*
         public function eliminar()
         {
             $query = 'DELETE FROM '.$this->tabla.' WHERE id= ?';

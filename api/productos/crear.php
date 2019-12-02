@@ -14,17 +14,7 @@
     $producto = new Producto($db);
     $data = json_decode(file_get_contents("php://input"));
     //preguntamos si los campos no estan vacios
-
-    if( !empty($data->nombre) && 
-        !empty($data->descripcion) && 
-        !empty($data->sw_stock) &&
-        !empty($data->precio) &&
-        !empty($data->tipo_producto) &&
-        !empty($data->id_unidad_medida) 
-      
-      
-    )
-    {
+echo $data->nombre;
         //doy los valores al objeto mesero
         $producto->nombre = $data->nombre;
         $producto->descripcion = $data->descripcion;
@@ -32,6 +22,7 @@
         $producto->precio = $data->precio;
         $producto->tipo_producto = $data->tipo_producto;
         $producto->id_unidad_medida = $data->id_unidad_medida;
+        $producto->imagen=$data->imagen;
         if($producto->crear())
         {
             http_response_code(201);
@@ -42,12 +33,7 @@
             http_response_code(503);
             echo json_encode(array('messsage'=>'Error'));
         }
-    }
-     else
-    {
-        http_response_code(201);
-        echo json_encode(array('messsage'=>'Error'));
-    }
+
 
 
 ?>
