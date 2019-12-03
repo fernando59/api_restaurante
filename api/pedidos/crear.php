@@ -18,16 +18,11 @@
 
     //preguntamos si los campos no estan vacios
 
-    if( !empty($data->descripcion) && 
-        !empty($data->id_mesa) && 
-        !empty($data->id_mesero) 
-      
-    )
-    {
-        //doy los valores al objeto mesero
-        $pedido->descripcion = $data->descripcion;
-        $pedido->id_mesa = $data->id_mesa;
+      //doy los valores al objeto mesero
+        $pedido->estado= $data->estado;
+        $pedido->id_reserva = $data->id_reserva;
         $pedido->id_mesero = $data->id_mesero;
+        $pedido->fecha = $data->fecha;
         if($pedido->crear())
         {
             http_response_code(201);
@@ -35,15 +30,11 @@
         }else
         {
             //servicio invalido
-            http_response_code(503);
+            http_response_code(201);
             echo json_encode(array('messsage'=>'Error'));
         }
-    }
-     else
-    {
-        http_response_code(404);
-        echo json_encode(array('messsage'=>'Error'));
-    }
+    
+ 
 
 
 ?>

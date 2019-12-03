@@ -13,7 +13,7 @@ class Database{
     private $password ='1feernando1';
     private $conn;*/
     private $host ='localhost';//localhost
-    private $dbName = 'restaurante_api';//apirestaurante
+    private $dbName = 'restaurante';//apirestaurante
     private $username = 'root';//root
     private $password ='';
     private $conn;

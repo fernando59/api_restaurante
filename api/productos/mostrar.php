@@ -25,8 +25,7 @@
                 'nombre'=>$nombre,
                 'descripcion'=>$descripcion,
                 'precio'=>$precio,
-                'sw_stock'=>$sw_stock,
-                'tipo producto'=>$tipo_producto,
+                'tipo_producto'=>$producto,
                 'unidad de medida'=>$unidad,
                 'id_unidad_medida'=>$id_unidad_medida
             );

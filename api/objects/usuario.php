@@ -3,7 +3,7 @@
     class Usuarios
     {
         private $conn;
-        private $tabla = 'Usuario';
+        private $tabla = 'usuario';
 
         //atributos
         public $codigo;
@@ -32,8 +32,8 @@
             Usuario.nombre_usuario,
             Usuario.email
         FROM
-            Persona 
-        LEFT JOIN '.$this->tabla.' ON Usuario.codigo = Persona.codigo';
+            persona 
+        LEFT JOIN '.$this->tabla.' ON usuario.codigo = persona.codigo';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta

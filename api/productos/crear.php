@@ -18,9 +18,8 @@ echo $data->nombre;
         //doy los valores al objeto mesero
         $producto->nombre = $data->nombre;
         $producto->descripcion = $data->descripcion;
-        $producto->sw_stock = $data->sw_stock;
         $producto->precio = $data->precio;
-        $producto->tipo_producto = $data->tipo_producto;
+        $producto->id_tipo_producto = $data->id_tipo_producto;
         $producto->id_unidad_medida = $data->id_unidad_medida;
         $producto->imagen=$data->imagen;
         if($producto->crear())

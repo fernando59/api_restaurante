@@ -24,8 +24,8 @@
             //Creo una v  ariable con el array y paso los parametros
             $item  =array(
                 'codigo'=>$codigo,
-                'nombre'=>$nombre,
-                'tipo'=>$tipo
+                'nombre'=>$nombre
+              
 
             );
             http_response_code(200);

@@ -7,9 +7,10 @@
 
         //atributos
         public $id;
-        public $descripcion;
-        public $id_mesa;
+        public $estado;
+        public $id_reserva;
         public $id_mesero;
+        public $fecha;
         
 
         public function __construct($db)
@@ -31,23 +32,24 @@
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET  
-            descripcion=:descripcion,
-            id_mesa=:id_mesa,
+            fecha=:fecha,
+            estado=:estado,
+            id_reserva=:id_reserva,
             id_mesero=:id_mesero
             
         ';
         $estamento = $this->conn->prepare($query);
 
         //paso los parametros
-        $this->descripcion  = htmlspecialchars(strip_tags(strtoupper($this->descripcion)));
-        $this->id_mesa  = htmlspecialchars(strip_tags($this->id_mesa));
+        $this->estado  = htmlspecialchars(strip_tags(strtoupper($this->estado)));
+        $this->id_reserva  = htmlspecialchars(strip_tags($this->id_reserva));
         $this->id_mesero  = htmlspecialchars(strip_tags($this->id_mesero));
-
+        $this->fecha = htmlspecialchars(strip_tags($this->fecha));
         //enlazo los values
-        $estamento->bindParam(':descripcion',$this->descripcion);
-        $estamento->bindParam(':id_mesa',$this->id_mesa);
+        $estamento->bindParam(':fecha',$this->fecha);
+        $estamento->bindParam(':id_reserva',$this->id_reserva);
         $estamento->bindParam(':id_mesero',$this->id_mesero);
-
+        $estamento->bindParam(':estado',$this->estado);
         if($estamento->execute())
         {
        

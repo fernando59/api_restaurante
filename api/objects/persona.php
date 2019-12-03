@@ -3,7 +3,7 @@
     class Personas
     {
         private $conn;
-        private $tabla = 'Persona';
+        private $tabla = 'persona';
 
         //atributos
         public $id;
@@ -91,7 +91,7 @@
         {
             $query = 'SELECT 
              p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.nit
-              FROM '.$this->tabla.' p,Cliente m WHERE p.codigo=m.codigo';
+              FROM '.$this->tabla.' p,cliente m WHERE p.codigo=m.codigo';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta

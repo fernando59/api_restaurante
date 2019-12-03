@@ -3,7 +3,7 @@
     class Producto
     {
         private $conn;
-        private $tabla = 'Productos';
+        private $tabla = 'productos';
 
         //atributos
         public $codigo;
@@ -11,8 +11,9 @@
         public $descripcion;
         public $precio;
         public $sw_stock;
-        public $tipo_producto;
+        public $id_tipo_producto;
         public $id_unidad_medida;
+        public $imagen;
         
 
         public function __construct($db)
@@ -23,8 +24,9 @@
         public function mostrar()
         {
             $query = 'SELECT
-                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,p.tipo_producto,u.nombre as unidad
-              FROM '.$this->tabla.' p,Unidad_Medida u WHERE p.id_unidad_medida=u.codigo ';
+                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,t.nombre as  producto,
+                u.nombre as unidad,p.id_unidad_medida as id_unidad_medida,p.imagen as imagen
+              FROM '.$this->tabla.' p,unidad_medida u,tipo_producto t WHERE p.id_unidad_medida=u.codigo AND t.codigo=p.id_tipo_producto  ';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -34,9 +36,10 @@
         }
         public function mostrarBebidas()
         {
-            $query = 'SELECT
-                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,p.tipo_producto,u.nombre as unidad,u.codigo as id_unidad_medida
-              FROM '.$this->tabla.' p,Unidad_Medida u WHERE p.id_unidad_medida=u.codigo AND p.tipo_producto="B" ';
+            $query = 'SELECT productos.codigo,productos.nombre,productos.descripcion,productos.precio,tipo_producto.nombre as producto,
+            unidad_medida.nombre as unidad,productos.id_unidad_medida,productos.imagen,productos.id_tipo_producto
+            FROM productos,unidad_medida,tipo_producto WHERE productos.id_tipo_producto=tipo_producto.codigo  AND
+            productos.id_unidad_medida=unidad_medida.codigo AND  productos.id_tipo_producto<=2';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -46,9 +49,10 @@
         }
         public function mostrarPlatos()
         {
-            $query = 'SELECT
-                p.codigo,p.nombre,p.descripcion,p.precio,p.sw_stock,p.tipo_producto,u.nombre as unidad,u.codigo as id_unidad_medida
-              FROM '.$this->tabla.' p,Unidad_Medida u WHERE p.id_unidad_medida=u.codigo AND p.tipo_producto!="B" ';
+            $query = 'SELECT productos.codigo,productos.nombre,productos.descripcion,productos.precio,tipo_producto.nombre as producto,
+            unidad_medida.nombre as unidad,productos.id_unidad_medida,productos.imagen,productos.id_tipo_producto
+            FROM productos,unidad_medida,tipo_producto WHERE productos.id_tipo_producto=tipo_producto.codigo  AND
+            productos.id_unidad_medida=unidad_medida.codigo AND  productos.id_tipo_producto!=2 AND productos.id_tipo_producto!=1';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
@@ -87,8 +91,9 @@
             descripcion=:descripcion,
             precio=:precio,
             sw_stock=:sw_stock,
-            tipo_producto=:tipo_producto,
-            id_unidad_medida=:id_unidad_medida
+            id_tipo_producto=:id_tipo_producto,
+            id_unidad_medida=:id_unidad_medida,
+            imagen=:imagen
           
         ';
         $estamento = $this->conn->prepare($query);
@@ -98,16 +103,15 @@
         $this->descripcion  = htmlspecialchars(strip_tags($this->descripcion));
         $this->precio  = htmlspecialchars(strip_tags($this->precio));
         $this->sw_stock  = htmlspecialchars(strip_tags($this->sw_stock));
-        $this->tipo_producto  = htmlspecialchars(strip_tags($this->tipo_producto));
+        $this->id_tipo_producto  = htmlspecialchars(strip_tags($this->id_tipo_producto));
         $this->id_unidad_medida  = htmlspecialchars(strip_tags($this->id_unidad_medida));
         //enlazo los values
         $estamento->bindParam(':nombre',$this->nombre);
         $estamento->bindParam(':descripcion',$this->descripcion);
         $estamento->bindParam(':precio',$this->precio);
-        $estamento->bindParam(':sw_stock',$this->sw_stock);
-        $estamento->bindParam(':tipo_producto',$this->tipo_producto);
+        $estamento->bindParam(':id_tipo_producto',$this->id_tipo_producto);
         $estamento->bindParam(':id_unidad_medida',$this->id_unidad_medida);
-
+        $estamento->bindParam(':imagen',$this->imagen);
         if($estamento->execute())
         {
        
