@@ -4,7 +4,7 @@
     {
         private $conn;
         private $tabla = 'productos';
-
+        private $table='detalle_pedido';
         //atributos
         public $codigo;
         public $nombre;
@@ -14,7 +14,9 @@
         public $id_tipo_producto;
         public $id_unidad_medida;
         public $imagen;
-        
+        public $cantidad;
+        public $id_pedido;
+        public $id_producto;
 
         public function __construct($db)
         {
@@ -150,6 +152,35 @@
         $estamento->bindParam(':tipo_producto',$this->tipo_producto);
         $estamento->bindParam(':id_unidad_medida',$this->id_unidad_medida);
 
+        if($estamento->execute())
+        {
+       
+            return true;
+        }
+      
+        return false;
+        }
+        public function crearDetalle(){
+            $query = 'INSERT INTO '.$this->table.' SET  
+            id_pedido=:id_pedido,
+            id_producto=:id_producto,
+            cantidad=:cantidad,
+            precio=:precio
+          
+            
+        ';
+        $estamento = $this->conn->prepare($query);
+
+        //paso los parametros
+        $this->id_pedido = htmlspecialchars(strip_tags($this->id_pedido));
+        $this->id_producto  = htmlspecialchars(strip_tags($this->id_producto));
+        $this->precio = htmlspecialchars(strip_tags($this->precio));
+        $this->cantidad  = htmlspecialchars(strip_tags($this->cantidad));
+        //enlazo los values
+        $estamento->bindParam(':id_pedido',$this->id_pedido);
+        $estamento->bindParam(':id_producto',$this->id_producto);
+        $estamento->bindParam(':precio',$this->precio);
+        $estamento->bindParam(':cantidad',$this->cantidad);
         if($estamento->execute())
         {
        

@@ -58,6 +58,17 @@
       
         return false;
         }
+        public function obetnerUltimoId()
+        {
+            $query = 'SELECT codigo
+            FROM '.$this->tabla.'  order by codigo desc limit 1';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
         /*
         
         public function editar()
