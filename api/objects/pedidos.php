@@ -11,7 +11,7 @@
         public $id_reserva;
         public $id_mesero;
         public $fecha;
-        
+        public $mesa;
 
         public function __construct($db)
         {
@@ -64,6 +64,39 @@
             FROM '.$this->tabla.'  order by codigo desc limit 1';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarTodo()
+        {
+            $query = '
+            SELECT reserva.codigo as codigo_reserva, pedido.codigo as codigo_pedido, 
+            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre FROM reserva, pedido, mesa, 
+            cliente,persona, detalle_reseva WHERE reserva.codigo = pedido.id_reserva AND 
+            reserva.codigo = detalle_reseva.id_reserva AND mesa.codigo = detalle_reseva.id_mesa AND reserva.id_cliente = cliente.codigo AND mesa.estado = "B" AND 
+            reserva.estado = "SOLICITADO" AND reserva.tipo_reserva = "A" AND persona.codigo=cliente.codigo
+            ';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarTodo2($mesa)
+        {
+            $query = '
+            SELECT reserva.codigo as codigo_reserva, pedido.codigo as codigo_pedido, 
+            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre FROM reserva, pedido, mesa, 
+            cliente,persona, detalle_reseva WHERE reserva.codigo = pedido.id_reserva AND 
+            reserva.codigo = detalle_reseva.id_reserva AND mesa.codigo = detalle_reseva.id_mesa AND reserva.id_cliente = cliente.codigo AND mesa.estado = "B" AND 
+            reserva.estado = "SOLICITADO" AND reserva.tipo_reserva = "A" AND persona.codigo=cliente.codigo AND mesa.codigo=?
+            ';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(1,$mesa);
             //ejecuto la consulta
             $estamento->execute();
             //retorno la consulta
