@@ -1,7 +1,7 @@
 <?php 
     header('Access-Control-Allow-Origin:*');
     header('Content-Type:application/json');
-    header("Access-Control-Allow-Methods:GET");
+
     include_once '../objects/pedidos.php';
     include_once '../config/basedatos.php';
 
@@ -10,7 +10,8 @@
 
     $pedido = new Pedidos($db);
     $palabra = isset($_GET['s'])?$_GET['s']:'';
-    $resultado  =$pedido->mostrarTodo2($palabra);
+
+    $resultado  =$pedido->mostrarProductos($palabra);
     $numero  = $resultado->rowCount();
     
 
@@ -24,16 +25,11 @@
             extract($fila);
             //Creo una v  ariable con el array y paso los parametros
             $item  =array(
-                'codigo_reserva'=>$codigo_reserva,
-                'codigo_pedido'=>$codigo_pedido,
-                'hora'=>$hora,
-                'nit'=>$nit,
-                'mesa'=>$mesa,
+                'codigo'=>$codigo,
                 'nombre'=>$nombre,
-                'carnet'=>$carnet,
-                'apellido'=>$apellido,
-                'fecha'=>$fecha,
-                'id_persona'=>$id_persona
+                'precio'=>$precio,
+                'cantidad'=>$cantidad
+                
             
 
             );

@@ -4,7 +4,7 @@ class Factura
     {
         private $conn;
         private $tabla = 'factura';
-
+        private $table='cobros';
         //atributos
         public $codigo;
         public $nit;
@@ -14,6 +14,7 @@ class Factura
         public $id_cajero;
         public $id_metodo_pago;
         public $id_pedido;
+        public $id_cliente;
 
         public function __construct($db)
         {
@@ -30,7 +31,30 @@ class Factura
             //retorno la consulta
             return  $estamento;
         }
-        
+        public function mostrarMesas($reserva)
+        {
+           
+                $query = '
+                SELECT mesa.codigo FROM reserva,pedido,mesa,detalle_reseva
+                 WHERE reserva.codigo=detalle_reseva.id_reserva and mesa.codigo=detalle_reseva.id_mesa and 
+                 reserva.codigo=? GROUP BY(mesa.codigo)
+                ';
+                //preparo la consulta
+                $estamento = $this->conn->prepare($query);
+                $estamento->bindParam(1,$reserva);
+                //ejecuto la consulta
+                $estamento->execute();
+                //retorno la consulta
+                return  $estamento;
+            
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(1,$reserva);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET  
@@ -69,5 +93,30 @@ class Factura
       
         return false;
         }
- }
+        public function crearCobro()
+        {
+            $query = 'INSERT INTO '.$this->table.' SET 
+            id_cliente=:id_cliente,
+            id_pedido=:id_pedido,
+            id_cajero=:id_cajero
+            
+        ';
+        $estamento = $this->conn->prepare($query);
+
+        //paso los parametros
+        $this->id_cliente  = htmlspecialchars(strip_tags($this->id_cliente));
+        $this->id_pedido  = htmlspecialchars(strip_tags($this->id_pedido));
+        $this->id_cajero  = htmlspecialchars(strip_tags($this->id_cajero));
+
+        //enlazo los values
+        $estamento->bindParam(':id_cliente',$this->id_cliente);
+        $estamento->bindParam(':id_pedido',$this->id_pedido);
+        $estamento->bindParam(':id_cajero',$this->id_cajero);
+
+        if($estamento->execute())
+        {
+          
+            return true;
+        }
+    }}
 ?>

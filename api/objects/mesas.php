@@ -3,7 +3,7 @@
     class Mesas
     {
         private $conn;
-        private $tabla = 'Mesa';
+        private $tabla = 'mesa';
 
         //atributos
         public $codigo;
@@ -90,6 +90,27 @@
         $estamento->bindParam(':nombre',$this->nombre);
         $estamento->bindParam(':estado',$this->estado);
         $estamento->bindParam(':capacidad',$this->capacidad);
+        $estamento->bindParam(':codigo',$this->codigo);
+        if($estamento->execute())
+        {
+          
+            return true;
+        }
+       
+        return false;
+        }
+        public function editarr()
+        {
+            $query = 'UPDATE '.$this->tabla.' SET 
+            estado="A"
+            WHERE codigo=:codigo
+            
+        ';
+        $estamento = $this->conn->prepare($query);
+
+        //paso los parametros
+
+        //enlazo los values
         $estamento->bindParam(':codigo',$this->codigo);
         if($estamento->execute())
         {

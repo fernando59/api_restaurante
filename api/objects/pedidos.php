@@ -89,11 +89,38 @@
         {
             $query = '
             SELECT reserva.codigo as codigo_reserva, pedido.codigo as codigo_pedido, 
-            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre FROM reserva, pedido, mesa, 
+            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre,persona.carnet,persona.apellido,pedido.fecha,persona.codigo as id_persona
+             FROM reserva, pedido, mesa, 
             cliente,persona, detalle_reseva WHERE reserva.codigo = pedido.id_reserva AND 
             reserva.codigo = detalle_reseva.id_reserva AND mesa.codigo = detalle_reseva.id_mesa AND reserva.id_cliente = cliente.codigo AND mesa.estado = "B" AND 
             reserva.estado = "SOLICITADO" AND reserva.tipo_reserva = "A" AND persona.codigo=cliente.codigo AND mesa.codigo=?
             ';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(1,$mesa);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarProductos($pedido)
+        {
+           
+                $query = '
+                SELECT productos.codigo,productos.nombre,productos.precio,COUNT(productos.codigo) AS cantidad
+                from pedido,reserva,detalle_pedido,productos 
+                WHERE pedido.id_reserva=reserva.codigo and pedido.codigo=detalle_pedido.id_pedido 
+                and productos.codigo=detalle_pedido.id_producto and pedido.codigo=?
+                GROUP BY(productos.codigo)
+                ';
+                //preparo la consulta
+                $estamento = $this->conn->prepare($query);
+                $estamento->bindParam(1,$pedido);
+                //ejecuto la consulta
+                $estamento->execute();
+                //retorno la consulta
+                return  $estamento;
+            
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             $estamento->bindParam(1,$mesa);
