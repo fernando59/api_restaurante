@@ -29,7 +29,7 @@ echo $data->nombre;
         }else
         {
             //servicio invalido
-            http_response_code(503);
+            http_response_code(201);
             echo json_encode(array('messsage'=>'Error'));
         }
 

@@ -2,7 +2,7 @@
 
     class U_medida
     {
-        private $tabla ='Unidad_Medida';
+        private $tabla ='unidad_medida';
         private $conn;
         //atributos
         public $codigo;

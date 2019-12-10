@@ -16,6 +16,7 @@
     $data = json_decode(file_get_contents("php://input"));
 
         $mesa->codigo = $data->codigo;
+        $mesa->estado = $data->estado;
         if($mesa->editarr())
         {
             http_response_code(200);

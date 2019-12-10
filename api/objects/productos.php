@@ -64,7 +64,7 @@
         }
         public function DropDownUnidad()
         {
-            $query='SELECT * FROM Unidad_Medida WHERE tipo="B"';
+            $query='SELECT * FROM unidad_medida WHERE tipo="B"';
              //preparo la consulta
              $estamento = $this->conn->prepare($query);
              //ejecuto la consulta

@@ -90,8 +90,32 @@
         public function mostrarClientes()
         {
             $query = 'SELECT 
-             p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.nit
+             p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.nit,p.edad
               FROM '.$this->tabla.' p,cliente m WHERE p.codigo=m.codigo';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarMesero()
+        {
+            $query = 'SELECT 
+             p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.foto,p.edad
+              FROM '.$this->tabla.' p,mesero m WHERE p.codigo=m.codigo';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function mostrarCaja()
+        {
+            $query = 'SELECT 
+             p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.descripcion,p.edad
+              FROM '.$this->tabla.' p,cajero m WHERE p.codigo=m.codigo';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta

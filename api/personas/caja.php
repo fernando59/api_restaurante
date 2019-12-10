@@ -9,7 +9,7 @@
     $db = $database->connect();
 
     $persona= new Personas($db);
-    $resultado  =$persona->mostrarClientes();
+    $resultado  =$persona->mostrarCaja();
     $numero  = $resultado->rowCount();
     
   
@@ -27,10 +27,10 @@
                 'nombre'=>$nombre,
                 'apellido'=>$apellido,
                 'telefono'=>$telefono,
-                'edad'=>$edad,
                 'direccion'=>$direccion,
+                'edad'=>$edad,
                 'carnet'=>$carnet,
-                'nit'=>$nit
+                'descripcion'=>$descripcion
               
 
             );

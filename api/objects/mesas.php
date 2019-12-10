@@ -102,7 +102,7 @@
         public function editarr()
         {
             $query = 'UPDATE '.$this->tabla.' SET 
-            estado="A"
+            estado=:estado
             WHERE codigo=:codigo
             
         ';
@@ -112,6 +112,7 @@
 
         //enlazo los values
         $estamento->bindParam(':codigo',$this->codigo);
+        $estamento->bindParam(':estado',$this->estado);
         if($estamento->execute())
         {
           
