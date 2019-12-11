@@ -28,7 +28,8 @@
                 'hora'=>$hora,
                 'nit'=>$nit,
                 'mesa'=>$mesa,
-                'nombre'=>$nombre
+                'nombre'=>$nombre,
+                'codigoMesa'=>$codigoMesa
             
 
             );

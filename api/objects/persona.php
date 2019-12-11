@@ -13,7 +13,10 @@
         public $telefono;
         public $direccion;
         public $carnet;
-     
+        public $codigo;
+        public $nit;
+        public $foto;
+        public $descripcion;
         
 
         public function __construct($db)
@@ -75,6 +78,72 @@
       
         return false;
         }
+        public function crearCliente()
+        {
+            $query = 'INSERT INTO cliente SET  
+            codigo=:codigo,
+            nit=:nit
+        ';
+        $estamento = $this->conn->prepare($query);
+        //paso los parametros
+       // $this->codigo  = htmlspecialchars($this->codigo);
+        $this->nit  = htmlspecialchars(strip_tags($this->nit));
+        //enlazo los values
+        $estamento->bindParam(':codigo',$this->codigo);
+        $estamento->bindParam(':nit',$this->nit);
+
+        if($estamento->execute())
+        {
+       
+            return true;
+        }
+      
+        return false;
+        }
+        public function crearMesero()
+        {
+            $query = 'INSERT INTO mesero SET  
+            codigo=:codigo,
+            foto=:foto
+        ';
+        $estamento = $this->conn->prepare($query);
+        //paso los parametros
+       // $this->codigo  = htmlspecialchars($this->codigo);
+        $this->nit  = htmlspecialchars(strip_tags($this->foto));
+        //enlazo los values
+        $estamento->bindParam(':codigo',$this->codigo);
+        $estamento->bindParam(':foto',$this->foto);
+
+        if($estamento->execute())
+        {
+       
+            return true;
+        }
+      
+        return false;
+        }
+        public function crearCaja()
+        {
+            $query = 'INSERT INTO cajero SET  
+            codigo=:codigo,
+            descripcion=:descripcion
+        ';
+        $estamento = $this->conn->prepare($query);
+        //paso los parametros
+       // $this->codigo  = htmlspecialchars($this->codigo);
+        $this->nit  = htmlspecialchars(strip_tags($this->descripcion));
+        //enlazo los values
+        $estamento->bindParam(':codigo',$this->codigo);
+        $estamento->bindParam(':descripcion',$this->descripcion);
+
+        if($estamento->execute())
+        {
+       
+            return true;
+        }
+      
+        return false;
+        }
         public function mostrarMeseros()
         {
             $query = 'SELECT 
@@ -116,6 +185,17 @@
             $query = 'SELECT 
              p.codigo,p.nombre,p.apellido,p.telefono,p.direccion,p.carnet,m.descripcion,p.edad
               FROM '.$this->tabla.' p,cajero m WHERE p.codigo=m.codigo';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
+        public function obtnerUltimoId()
+        {
+            $query = 'SELECT codigo
+            FROM '.$this->tabla.'  order by codigo desc limit 1';
             //preparo la consulta
             $estamento = $this->conn->prepare($query);
             //ejecuto la consulta
