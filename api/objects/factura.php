@@ -31,6 +31,16 @@ class Factura
             //retorno la consulta
             return  $estamento;
         }
+        public function mostrarTotal()
+        {
+            $query = 'SELECT total FROM factura ';
+            //preparo la consulta
+            $estamento = $this->conn->prepare($query);
+            //ejecuto la consulta
+            $estamento->execute();
+            //retorno la consulta
+            return  $estamento;
+        }
         public function mostrarMesas($reserva)
         {
            

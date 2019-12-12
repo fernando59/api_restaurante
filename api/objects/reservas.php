@@ -109,7 +109,7 @@
 
         public function filtrarReserva($fecha)
         {
-            $query = 'SELECT r.codigo,r.fecha,r.hora,r.estado,r.numero_personas,p.nombre FROM '.$this->tabla.' r,Persona p WHERE fecha =? AND r.id_cliente=p.codigo';
+            $query = 'SELECT r.codigo,r.fecha,r.observaciones,r.hora,r.estado,r.numero_personas,p.nombre FROM '.$this->tabla.' r,Persona p WHERE fecha =? AND r.id_cliente=p.codigo';
          
             //preparo la consulta
             $estamento = $this->conn->prepare($query);

@@ -79,7 +79,24 @@
        
         return false;
         }
-    
+        public function seleccionarUsuario()
+        {
+            $query = "SELECT * FROM usuario 
+            WHERE usuario.nombre_usuario=:nombre_usuario 
+            and usuario.password_usuario=:password_usuario
+             ";
+             $estamento = $this->conn->prepare($query);
+            //preparo la consulta
+            $estamento->bindParam(':nombre_usuario',$this->nombre_usuario);
+            $estamento->bindParam(':password_usuario',$this->password_usuario);
+            
+            //ejecuto la consulta
+          
+             $estamento->execute();
+          return $estamento;
+            //retorno la consulta
+           
+        }
         public function validar()
         {
             $query = "SELECT id_persona,usuario,password as con ".$this->tabla." WHERE email= ? LIMIT 0,1";

@@ -33,7 +33,8 @@
                 'carnet'=>$carnet,
                 'apellido'=>$apellido,
                 'fecha'=>$fecha,
-                'id_persona'=>$id_persona
+                'id_persona'=>$id_persona,
+                'codigo_mesa'=>$codigo_mesa
             
 
             );

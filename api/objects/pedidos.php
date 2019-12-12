@@ -90,7 +90,7 @@
         {
             $query = '
             SELECT reserva.codigo as codigo_reserva, pedido.codigo as codigo_pedido, 
-            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre,persona.carnet,persona.apellido,pedido.fecha,persona.codigo as id_persona
+            reserva.hora, cliente.nit, mesa.nombre as mesa,persona.nombre,persona.carnet,persona.apellido,pedido.fecha,persona.codigo as id_persona,mesa.codigo as codigo_mesa
              FROM reserva, pedido, mesa, 
             cliente,persona, detalle_reseva WHERE reserva.codigo = pedido.id_reserva AND 
             reserva.codigo = detalle_reseva.id_reserva AND mesa.codigo = detalle_reseva.id_mesa AND reserva.id_cliente = cliente.codigo AND mesa.estado = "B" AND 
@@ -130,37 +130,38 @@
             //retorno la consulta
             return  $estamento;
         }
+
         /*
         
-        public function editar()
-        {
-            $query = 'UPDATE '.$this->tabla.' SET 
-            nombre=:nombre,
-            estado=:estado,
-            capacidad=:capacidad
-            WHERE id=:id
-            
-        ';
-        $estamento = $this->conn->prepare($query);
+            public function editar()
+            {
+                $query = 'UPDATE '.$this->tabla.' SET 
+                nombre=:nombre,
+                estado=:estado,
+                capacidad=:capacidad
+                WHERE id=:id
+                
+            ';
+            $estamento = $this->conn->prepare($query);
 
-        //paso los parametros
-        $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
-        $this->estado  = htmlspecialchars(strip_tags($this->estado));
-        $this->capacidad  = htmlspecialchars(strip_tags($this->capacidad));
-        $this->id  = htmlspecialchars(strip_tags($this->id));
-        //enlazo los values
-        $estamento->bindParam(':nombre',$this->nombre);
-        $estamento->bindParam(':estado',$this->estado);
-        $estamento->bindParam(':capacidad',$this->capacidad);
-        $estamento->bindParam(':id',$this->id);
-        if($estamento->execute())
-        {
-          
-            return true;
-        }
-       
-        return false;
-        }
+            //paso los parametros
+            $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
+            $this->estado  = htmlspecialchars(strip_tags($this->estado));
+            $this->capacidad  = htmlspecialchars(strip_tags($this->capacidad));
+            $this->id  = htmlspecialchars(strip_tags($this->id));
+            //enlazo los values
+            $estamento->bindParam(':nombre',$this->nombre);
+            $estamento->bindParam(':estado',$this->estado);
+            $estamento->bindParam(':capacidad',$this->capacidad);
+            $estamento->bindParam(':id',$this->id);
+            if($estamento->execute())
+            {
+            
+                return true;
+            }
+        
+            return false;
+            }
         public function eliminar()
         {
             $query = 'DELETE FROM '.$this->tabla.' WHERE id= ?';
