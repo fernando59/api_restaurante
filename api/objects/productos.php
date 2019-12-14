@@ -85,14 +85,43 @@
         }
 
 
-
+        public function subirImagen($file)
+        {
+            $directorio='imagenes/';
+            $this->imagen=basename($file['name']);
+            $archivo=$directorio.basename($file['name']);
+            $tipoArchivo=strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+            $ver_imagen=getimagesize($file['tmp_name']);
+                if($ver_imagen!=false)
+                 {
+                        $size=$file['size'];
+                        if($size>500000)
+                        {
+                            echo 'Error';
+                            return false;
+                        }else{
+                            if($tipoArchivo=='jpg' || $tipoArchivo=='jpeg')
+                            {
+                                if(move_uploaded_file($file['tmp_name'],$archivo))
+                                {
+                                    return true;
+                                }else{
+                                    echo 'error';
+                                    return false;
+                                }
+                            }else{
+                                echo 'error';
+                                return false;
+                            }
+                        }
+                 }
+        }
         public function crear()
         {
             $query = 'INSERT INTO '.$this->tabla.' SET  
             nombre=:nombre,
             descripcion=:descripcion,
             precio=:precio,
-            sw_stock=:sw_stock,
             id_tipo_producto=:id_tipo_producto,
             id_unidad_medida=:id_unidad_medida,
             imagen=:imagen
@@ -104,7 +133,7 @@
         $this->nombre  = htmlspecialchars(strip_tags(strtoupper($this->nombre)));
         $this->descripcion  = htmlspecialchars(strip_tags($this->descripcion));
         $this->precio  = htmlspecialchars(strip_tags($this->precio));
-        $this->sw_stock  = htmlspecialchars(strip_tags($this->sw_stock));
+      
         $this->id_tipo_producto  = htmlspecialchars(strip_tags($this->id_tipo_producto));
         $this->id_unidad_medida  = htmlspecialchars(strip_tags($this->id_unidad_medida));
         //enlazo los values
@@ -159,6 +188,19 @@
         }
       
         return false;
+        }
+        public function eliminarDetalle()
+        {
+            $query = 'DELETE FROM detalle_pedido WHERE id_pedido=:id_pedido AND id_producto=:id_producto';
+            $estamento = $this->conn->prepare($query);
+            $estamento->bindParam(':id_pedido',$this->id_pedido);
+            $estamento->bindParam(':id_producto',$this->id_producto);
+            // execute query
+            if($estamento->execute()){
+                return true;
+            }
+        
+            return false;
         }
         public function crearDetalle(){
             $query = 'INSERT INTO '.$this->table.' SET  

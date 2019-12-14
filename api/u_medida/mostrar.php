@@ -24,7 +24,8 @@
             //Creo una v  ariable con el array y paso los parametros
             $item  =array(
                 'codigo'=>$codigo,
-                'nombre'=>$nombre
+                'nombre'=>$nombre,
+                'tipo'=>$tipo
               
 
             );

@@ -14,14 +14,15 @@
     $producto = new Producto($db);
     $data = json_decode(file_get_contents("php://input"));
     //preguntamos si los campos no estan vacios
-echo $data->nombre;
+    $dir_subida = '/imagenes/';
+    $fichero_subido = $dir_subida . basename($_FILES['fichero_usuario']['name']);
         //doy los valores al objeto mesero
         $producto->nombre = $data->nombre;
         $producto->descripcion = $data->descripcion;
         $producto->precio = $data->precio;
         $producto->id_tipo_producto = $data->id_tipo_producto;
         $producto->id_unidad_medida = $data->id_unidad_medida;
-        $producto->imagen=$data->imagen;
+        $producto->imagen=move_uploaded_file($_FILES['fichero_usuario']['tmp_name'],$data->imagen);//$data->imagen;
         if($producto->crear())
         {
             http_response_code(201);
